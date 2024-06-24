@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const users = require("../models/users");
+const tweets = require("../models/tweets");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -9,5 +9,7 @@ router.get("/", function (req, res, next) {
 
 module.exports = router;
 
-// POST  SIGN IN
-// POST  SIGN UP
+// POST / CreateTweet
+// Delete Supprimer Tweet
+// POST LikeTweet
+// GET List Tweets

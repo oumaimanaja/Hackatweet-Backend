@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const users = require("../models/users");
+
+const hashtags = require("../models/hashtags");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -9,5 +10,5 @@ router.get("/", function (req, res, next) {
 
 module.exports = router;
 
-// POST  SIGN IN
-// POST  SIGN UP
+// GET SearchByHashtag
+// GET List Hashtags
