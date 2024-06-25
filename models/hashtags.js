@@ -5,3 +5,4 @@ const hashtagSchema = mongoose.Schema({
 });
 
 const hashtag = mongoose.model("hashtags", hashtagSchema);
+module.exports = hashtag;
