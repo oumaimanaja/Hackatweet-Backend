@@ -32,8 +32,8 @@ router.post("/signup", (req, res) => {
         token: uid2(32),
       });
 
-      newUser.save().then(() => {
-        res.json({ result: true, token: newUser.token });
+      newUser.save().then((data) => {
+        res.json({ result: true, userid: data._id, token: newUser.token });
       });
     } else {
       // User already exists in database
@@ -54,7 +54,7 @@ router.post("/signin", (req, res) => {
     //password: req.body.password, password is hashed now
   }).then((data) => {
     if (data && bcrypt.compareSync(req.body.password, data.password)) {
-      res.json({ result: true, token: data.token });
+      res.json({ result: true, userid: data._id, token: data.token });
     } else if (!data) {
       res.json({ result: false, error: "User not found" });
     } else if (!bcrypt.compareSync(req.body.password, data.password)) {
