@@ -4,6 +4,7 @@ const User = require("../models/users");
 const uid2 = require("uid2");
 const bcrypt = require("bcrypt");
 const { checkBody } = require("../modules/checkBody");
+const Tweet = require("../models/tweets");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -33,7 +34,7 @@ router.post("/signup", (req, res) => {
       });
 
       newUser.save().then((data) => {
-        res.json({ result: true, userid: data._id, token: newUser.token });
+        res.json({ result: true, userid: data._id, token: newUser.token, tweetsNumber: 0 });
       });
     } else {
       // User already exists in database
@@ -54,7 +55,9 @@ router.post("/signin", (req, res) => {
     //password: req.body.password, password is hashed now
   }).then((data) => {
     if (data && bcrypt.compareSync(req.body.password, data.password)) {
-      res.json({ result: true, userid: data._id, token: data.token });
+      //res.json({ result: true, userid: data._id, token: data.token, data.tweets.length() });
+      console.log(' user info : ', data )
+      res.json({ result: true, userid: data._id, token: data.token, tweetsNumber: data.tweets.length });
     } else if (!data) {
       res.json({ result: false, error: "User not found" });
     } else if (!bcrypt.compareSync(req.body.password, data.password)) {
