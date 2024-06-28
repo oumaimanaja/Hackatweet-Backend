@@ -15,7 +15,19 @@ module.exports = router;
 router.get("/:tag", async (req, res) => {
   const hashtag = req.params.tag.slice(1);
   console.log("this is the:", hashtag);
-  const tagresults = await Hashtag.find({ hashtag }).populate("tweets");
+  const tagresults = await Hashtag.find({ hashtag }).populate({
+    path: "tweets",
+    populate: [
+      {
+        path: "userId",
+        model: "users",
+      },
+      {
+        path: "likedBy",
+        model: "users",
+      },
+    ],
+  });
   console.log("this is the:", tagresults);
   if (tagresults.length != 0) {
     res.json({

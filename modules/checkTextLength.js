@@ -3,7 +3,7 @@
 function checkTextLength(body, keys) {
   let isNotLong = true;
 
-  if (body[keys].length > 100) {
+  if (body[keys].length > 280) {
     isNotLong = false;
   }
   return isNotLong;
