@@ -34,7 +34,13 @@ router.post("/signup", (req, res) => {
       });
 
       newUser.save().then((data) => {
-        res.json({ result: true, userid: data._id, token: newUser.token, tweetsNumber: 0 });
+        res.json({
+          result: true,
+          firstname: data.firstname,
+          userid: data._id,
+          token: newUser.token,
+          tweetsNumber: 0,
+        });
       });
     } else {
       // User already exists in database
@@ -56,8 +62,14 @@ router.post("/signin", (req, res) => {
   }).then((data) => {
     if (data && bcrypt.compareSync(req.body.password, data.password)) {
       //res.json({ result: true, userid: data._id, token: data.token, data.tweets.length() });
-      console.log(' user info : ', data )
-      res.json({ result: true, userid: data._id, token: data.token, tweetsNumber: data.tweets.length });
+      console.log(" user info : ", data);
+      res.json({
+        result: true,
+        firstname: data.firstname,
+        userid: data._id,
+        token: data.token,
+        tweetsNumber: data.tweets.length,
+      });
     } else if (!data) {
       res.json({ result: false, error: "User not found" });
     } else if (!bcrypt.compareSync(req.body.password, data.password)) {

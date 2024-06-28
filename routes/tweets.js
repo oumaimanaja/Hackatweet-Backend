@@ -75,7 +75,7 @@ router.post("/createTweet", async (req, res) => {
     LikedBy: [],
     userId: userId,
   });
-  console.log(newTweet);
+  //console.log(newTweet);
   // Save the tweet to database
   const savedTweet = await newTweet.save();
 
@@ -83,7 +83,9 @@ router.post("/createTweet", async (req, res) => {
   await updateHashtags(hashtags, savedTweet._id);
   // Update user's tweets array directly using user found by username
   await User.updateOne({ _id: userId }, { $push: { tweets: savedTweet._id } });
-  return res.json({ result: true });
+  const tweetsNumber = await Tweet.find();
+  //console.log("this is numbre :", );
+  return res.json({ result: true, tweetsNumber: tweetsNumber.length });
 });
 
 // GET List Tweets
@@ -109,13 +111,15 @@ router.delete("/delete/:id", async (req, res) => {
 router.put("/like", async (req, res) => {
   const { tweetId, userId, isLiked } = req.body;
 
-  if (isLiked === "true") {
+  if (isLiked) {
+    // L'utilisateur aime déjà le tweet, donc on le retire
     const a = await Tweet.updateOne(
       { _id: tweetId },
-      { $push: { likedBy: userId } }
+      { $pull: { likedBy: userId } }
     );
-  } else if (isLiked === "false") {
-    await Tweet.updateOne({ _id: tweetId }, { $pull: { likedBy: userId } });
+  } else {
+    // L'utilisateur n'aime pas encore le tweet, donc on l'ajoute
+    await Tweet.updateOne({ _id: tweetId }, { $push: { likedBy: userId } });
   }
   res.json({ result: true });
 });
